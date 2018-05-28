@@ -1,0 +1,93 @@
+* using log directory 'C:/Users/Asus/Documents/GitHub/SCSH/toy.Rcheck'
+* using R version 3.5.0 (2018-04-23)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: CP950
+* checking for file 'toy/DESCRIPTION' ... OK
+* checking extension type ... Package
+* this is package 'toy' version '1.0'
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for .dll and .exe files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking whether package 'toy' can be installed ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Description field: should contain one or more complete sentences.
+Non-standard license specification:
+  What license is it under?
+Standardizable: FALSE
+Checking should be performed on sources prepared by 'R CMD build'.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... NOTE
+prepare_Rd: f1.Rd:22-24: Dropping empty section \details
+prepare_Rd: f1.Rd:25-31: Dropping empty section \value
+prepare_Rd: f1.Rd:38-40: Dropping empty section \note
+prepare_Rd: f1.Rd:35-37: Dropping empty section \author
+prepare_Rd: f1.Rd:32-34: Dropping empty section \references
+prepare_Rd: f1.Rd:44-46: Dropping empty section \seealso
+prepare_Rd: f2.Rd:22-24: Dropping empty section \details
+prepare_Rd: f2.Rd:25-31: Dropping empty section \value
+prepare_Rd: f2.Rd:38-40: Dropping empty section \note
+prepare_Rd: f2.Rd:35-37: Dropping empty section \author
+prepare_Rd: f2.Rd:32-34: Dropping empty section \references
+prepare_Rd: f2.Rd:44-46: Dropping empty section \seealso
+* checking Rd metadata ... OK
+* checking Rd cross-references ... WARNING
+Unknown package '<pkg>' in Rd xrefs
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... WARNING
+Auto-generated content requiring editing in Rd object 'f1':
+  \title
+  \description
+
+Auto-generated content requiring editing in Rd object 'f2':
+  \title
+  \description
+
+* checking for unstated dependencies in examples ... WARNING
+Warning: parse error in file 'toy-Ex.R':
+86:8: unexpected symbol
+85: 
+86: simple examples
+           ^
+* checking contents of 'data' directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... ERROR
+Running examples in 'toy-Ex.R' failed
+The error most likely occurred in:
+
+> ### Name: toy-package
+> ### Title: What the package does (short line)
+> ### Aliases: toy-package toy
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> simple examples of the most important functions
+Error: unexpected symbol in "simple examples"
+Execution halted
+* checking PDF version of manual ... OK
+* DONE
+Status: 1 ERROR, 3 WARNINGs, 2 NOTEs
