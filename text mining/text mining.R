@@ -27,11 +27,10 @@ IC = tm_map(IC, tolower)
 IC = tm_map(IC, removeNumbers)
 IC = tm_map(IC, removeWords,c("c","p","l","s","q"))
 IC = tm_map(IC, removeWords, stopwords("english"))
-IC = tm_map(IC, removeWords, stemDocument)
 # create document-term matrix
 writeLines(as.character(IC[[1]]))
-ICdtm = DocumentTermMatrix(IC,control = list(weighting=weightTfIdf))
-ICdtm = DocumentTermMatrix(IC)
+ICdtm = DocumentTermMatrix(IC, control = list(weighting=weightTfIdf))
+# ICdtm = DocumentTermMatrix(IC)
 nrow(ICdtm);ncol(ICdtm)
 str(ICdtm)
 
@@ -40,28 +39,28 @@ str(ICdtm)
 Hdtm <- ICdtm[1:51,]
 counts <- as.matrix(Hdtm)
 freq <- colSums(counts)
-Ho <- order(freq,decreasing = T)
+Ho <- order(freq, decreasing = T)
 freq <- freq[Ho]
 counts <- counts[,Ho]
 barplot(freq[1:50], las = 2 ,main ="Most frequent words", ylab = "word drequencies")
 
 
 # M先生饌寫 -------------------------------------------------------------------
+
 Mdtm <- ICdtm[52:65,]
 counts <- as.matrix(Mdtm)
 freq <- colSums(counts)
-Mo <- order(freq,decreasing = T)
+Mo <- order(freq, decreasing = T)
 freq <- freq[Mo]
-counts <- counts[,Mo]
+counts <- counts[, Mo]
 length(counts)
 dim(ICdtm)
 barplot(freq[1:50], las = 2 ,main ="Most frequent words", ylab = "word drequencies")
 
-
 # 建立分類矩陣 ------------------------------------------------------------------
 # num <- union(Ho[1:30], Mo[1:30])
-# num <- base::intersect(Ho[1:100],Mo[1:100])
-num <- setdiff(Ho[1:100],Mo[1:100]) # 互斥項
+# num <- base::intersect(Ho[1:100], Mo[1:100])
+num <- setdiff(Ho[1:10],Mo[1:10]) # 互斥項
 data <- as.matrix(ICdtm)
 nrow(data[,num]);ncol(data[,num])
 a <- c()
@@ -156,7 +155,7 @@ tobj <- tune.svm(train[,-(length(num)+1)],
                  train[,(length(num)+1)], 
                  data=train, 
                  cost= 100*(1:10), 
-                 gamma=0.005*(1:10))
+                 gamma=0.001*(1:10))
 summary(tobj)
 
 plot(tobj, xlab = "gamma", ylab = "C")
@@ -164,17 +163,21 @@ plot(tobj, xlab = "gamma", ylab = "C")
 s1<-svm(train[,-(length(num)+1)],train[,(length(num)+1)], 
         data=train, cost= 500, gamma=0.005,cross=64)
 s1
-pred1<-predict(s1,train[,-(length(num)+1)])
-pred1
-table(train[,(length(num)+1)],pred1)
+preds1<-predict(s1,train[,-(length(num)+1)])
+preds1
+table(train[,(length(num)+1)],preds1)
 
-pred2 <- predict(s1, test[,-(length(num)+1)])
+preds2 <- predict(s1, test[,-(length(num)+1)])
 
-pred2
+preds2
 
 
 # LDA ---------------------------------------------------------------------
+library(corrplot)
+corr.matrix <- cor(train[,-(length(num)+1)])
+corrplot.mixed(corr.matrix)
 
+# 會有共線性可能是片語一起出現
 library(MASS)
 lda<-lda(train[,(length(num)+1)]~.,data=train[,-(length(num)+1)])
 predlda <- predict(lda,train[,-(length(num)+1)])
@@ -183,38 +186,56 @@ table(predlda$class,train[,(length(num)+1)])
 pred3 <- predict(lda,test[,-(length(num)+1)])
 pred3$class
 
-# charles -----------------------------------------------------------------
 
+# k最近鄰居分類法 ----------------------------------------------------------------
 
-library(tm)
-library(magrittr)
-library("NLP")
-library(slam)
+# 安裝並載入class套件
+library(class)
 library(dplyr)
-newdata$text%<>%as.character()
-#先把不要的髒東西抓出來
-IC <- Corpus(VectorSource(newdata$text))
-writeLines(as.character(IC[[1]]))
-IC
-str(IC)
-#清除標點符號#
-#d.corpus <- tm_map(IC, removePunctuation)
-#清除數字#
-#d.corpus <- tm_map(IC, removeNumbers)
-#轉換大小寫#
-#d.corpus <- tm_map(IC, tolower)
-#清除指定文字#
-#IC <- tm_map(IC, removeWords,c("<c>","<p>","<l>","<S>","<Q>"))
 
-#建立text matrix
-tdm <- DocumentTermMatrix(IC, control =list(weighting=weightTfIdf,tolower=FALSE))
-tdm
-tdm <- DocumentTermMatrix(IC)
-tdm
-inspect(tdm[1:5,1:10])
-# 分類 ----------------------------------------------------------------------
+# 計算k值(幾個鄰居)通常可以用資料數的平方根
+kv <- round(sqrt(65))
+kv
+# 建立模型 
 
-counts <- as.matrix(ICtdm)
+prediction <- knn(train = train[,-(length(num)+1)], 
+                  test = test[,-(length(num)+1)], 
+                  cl = train[,(length(num)+1)], 
+                  k = kv)
+
+# 評估正確性
+cm <- table(x = test$V82, y = prediction, dnn = c("實際", "預測"))
+cm
+
+knnaccuracy <- sum(cm[1,2]) / sum(cm)
+knnaccuracy
+
+# charles -----------------------------------------------------------------
+# 文字雲  ----------------------------------------------------------------------
+
+
+# H先生的文字雲 -----------------------------------------------------------------
+
+counts <- as.matrix(Hdtm)
+freq <- colSums(counts)
+o <- order(freq, decreasing = T)
+freq <- freq[o]
+counts <- counts[,o]
+# wordcloud
+library(wordcloud)
+
+wordsFreq <- names(freq)
+wordcloud(words = wordsFreq,
+          freq = freq,
+          random.order = F,
+          max.words = 100,
+          rot.per = 0.5,
+          colors = brewer.pal(8,"Dark2"))
+
+
+# M先生的文字雲 -----------------------------------------------------------------
+
+counts <- as.matrix(Mdtm)
 freq <- colSums(counts)
 o <- order(freq, decreasing = T)
 freq <- freq[o]
@@ -224,7 +245,7 @@ library(wordcloud)
 wordsFreq <- names(freq)
 wordcloud(words = wordsFreq,
           freq = freq,
-          min.freq = 181,
           random.order = F,
-          rot.per = 0.1)
-
+          max.words = 100,
+          rot.per = 0.5,
+          colors = brewer.pal(8,"Dark2"))

@@ -1,9 +1,8 @@
 # 小考
+# 第一題
+# (1)
 set.seed(2018)
-x_old = 5
-x = c()
-x_new = 0
-y=0
+x_old = 5 ; x = c() ; x_new = 0 ; y=0
 for(i in 1:5000){
   u1 = runif(1,0,1)
   if(x_old == 0){
@@ -30,7 +29,7 @@ mean(t(x));var(t(x))
 Y <- x[2001:5000]
 mean(Y);var(Y)
 
-# (4)
+# (4) 計算P(x),x=0,1,2,...,10
 library(dplyr)
 options(digits = 4)
 p <- NULL

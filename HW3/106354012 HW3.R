@@ -139,11 +139,11 @@ acc_rate6 = accept/k
 acc_rate6
 c(acc_rate1,acc_rate2,acc_rate3,acc_rate4,acc_rate5,acc_rate6)
 
-# (x0 = 0, sigma = 5) -----------------------------------------------------
+# (x0 = 0, sigma = 3) -----------------------------------------------------
 x = x_old = 0; x_new = 0;k = 1000;
 
 for (i in 1:k){
-  y = rnorm(1,x_old,3);               # 生成一個x*
+  y = rnorm(1,x_old,2);               # 生成一個x*
   u = runif(1,0,1);                   # 亂數生成機率     
   alpha = exp(-(y^2-(x_old)^2)/2);    # 條件機率
   x_new = ifelse(u < alpha, y, x_old)
