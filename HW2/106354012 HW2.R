@@ -1,5 +1,6 @@
 # HW02
 ?faithful
+library(ggplot2)
 str(faithful)
 plot(faithful[,-3], 
      xlab = "Eruption time (min)", 
@@ -78,17 +79,17 @@ return(A)
   
 # plot initial contours
 # 繪製初始輪廓
-iter <- 1
-plot_em(theta)
-ggsave(filename=paste("EM",formatC(iter,width=4,flag="0"),".png",sep=""))
-dev.off()
+#iter <- 1
+#plot_em(theta)
+#ggsave(filename=paste("EM",formatC(iter,width=4,flag="0"),".png",sep=""))
+#dev.off()
 
 # run EM and plot
 for (iter in 2:30){
   T <- E.step(theta)
   theta <- M.step(T)
-  plot_em(theta)
-  ggsave(filename=paste("EM",formatC(iter,width=4,flag="0"),".png",sep=""))
+  #plot_em(theta)
+  #ggsave(filename=paste("EM",formatC(iter,width=4,flag="0"),".png",sep=""))
 }
 theta
 
